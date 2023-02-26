@@ -3,9 +3,9 @@ namespace VehicleTravelApp
 {
     public class MotorcycleInFile : VehicleBase
     {
-        public override event WayAddedDelegate WayAdded;
+        public override event TripAddedDelegate TripAdded;
 
-        private const string fileName = "_MotoWay.txt";
+        private const string fileName = "_MotoTrip.txt";
         private string brand;
         private string model;
         private string driver;
@@ -63,17 +63,17 @@ namespace VehicleTravelApp
             }
         }
 
-        public override void AddWay(float way)
+        public override void AddTrip(float trip)
         {
             using (var writer = File.AppendText(fullFileName))
             {
-                if (way >= 0 && way <= float.MaxValue)
+                if (trip >= 0 && trip <= float.MaxValue)
                 {
-                    writer.WriteLine(way);
+                    writer.WriteLine(trip);
 
-                    if (WayAdded != null)
+                    if (TripAdded != null)
                     {
-                        WayAdded(this, new EventArgs());
+                        TripAdded(this, new EventArgs());
                     }
                 }
                 else
@@ -83,30 +83,31 @@ namespace VehicleTravelApp
             }
         }
 
-        public override void AddWay(char way)
+        public override void AddTrip(char trip)
         {
-            var wayInput = way switch
+            var tripInput = trip switch
             {
                 'W' or 'w' => 21,
                 'B' or 'b' => 17,
-                'S' or 's' => 2.1f,
+                'Z' or 'z' => 173,
+                'L' or 'l' => 190,
                 _ => throw new Exception("Incorrect Letter! \n"),
             };
 
             {
-                this.AddWay(wayInput);
+                this.AddTrip(tripInput);
             }
         }
 
-        public override void AddWay(string way)
+        public override void AddTrip(string trip)
         {
-            if (float.TryParse(way, out float wayInString))
+            if (float.TryParse(trip, out float tripInString))
             {
-                this.AddWay(wayInString);
+                this.AddTrip(tripInString);
             }
-            else if (char.TryParse(way, out char wayInLeatters))
+            else if (char.TryParse(trip, out char tripInLeatters))
             {
-                this.AddWay(wayInLeatters);
+                this.AddTrip(tripInLeatters);
             }
             else
             {
@@ -114,27 +115,27 @@ namespace VehicleTravelApp
             }
         }
 
-        public override void AddWay(int way)
+        public override void AddTrip(int trip)
         {
-            float wayInInt = (float)way;
-            this.AddWay(wayInInt);
+            float tripInInt = (float)trip;
+            this.AddTrip(tripInInt);
         }
 
-        public override void AddWay(double way)
+        public override void AddTrip(double trip)
         {
-            float wayInDouble = (float)way;
-            this.AddWay(wayInDouble);
+            float tripInDouble = (float)trip;
+            this.AddTrip(tripInDouble);
         }
         public override Statistics GetStatistics()
         {
-            var waysFromFile = this.ReadWaysFromFile();
-            var statistics = this.CountStatistics(waysFromFile);
+            var tripsFromFile = this.ReadTripsFromFile();
+            var statistics = this.CountStatistics(tripsFromFile);
             return statistics;
         }
 
-        private List<float> ReadWaysFromFile()
+        private List<float> ReadTripsFromFile()
         {
-            var ways = new List<float>();
+            var trips = new List<float>();
             if (File.Exists($"{fullFileName}"))
             {
                 using (var reader = File.OpenText($"{fullFileName}"))
@@ -143,21 +144,21 @@ namespace VehicleTravelApp
                     while (line != null)
                     {
                         var number = float.Parse(line);
-                        ways.Add(number);
+                        trips.Add(number);
                         line = reader.ReadLine();
                     }
                 }
             }
-            return ways;
+            return trips;
         }
 
-        private Statistics CountStatistics(List<float> ways)
+        private Statistics CountStatistics(List<float> trips)
         {
             var statistics = new Statistics();
 
-            foreach (var way in ways)
+            foreach (var trip in trips)
             {
-                statistics.AddWay(way);
+                statistics.AddTrip(trip);
             }
 
             return statistics;

@@ -51,12 +51,12 @@ namespace VehicleTravelApp
             this.Count = 0;
         }
 
-        public void AddWay(float way)
+        public void AddTrip(float trip)
         {
             this.Count++;
-            this.Sum += way;
-            this.Min = Math.Min(way, this.Min);
-            this.Max = Math.Max(way, this.Max);
+            this.Sum += trip;
+            this.Min = Math.Min(trip, this.Min);
+            this.Max = Math.Max(trip, this.Max);
         }
     }
 

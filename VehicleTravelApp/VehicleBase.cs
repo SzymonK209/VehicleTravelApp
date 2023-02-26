@@ -3,9 +3,9 @@ namespace VehicleTravelApp
 {
     public abstract class VehicleBase : IVehicle
     {
-        public delegate void WayAddedDelegate(object sender, EventArgs args);
+        public delegate void TripAddedDelegate(object sender, EventArgs args);
         
-        public abstract event WayAddedDelegate WayAdded;
+        public abstract event TripAddedDelegate TripAdded;
 
         public  VehicleBase(string brand, string model, int year, string driver)
         {
@@ -23,15 +23,15 @@ namespace VehicleTravelApp
 
         public virtual string Driver { get; set; }
 
-        public abstract void AddWay(float way);
+        public abstract void AddTrip(float trip);
 
-        public abstract void AddWay(char way);
+        public abstract void AddTrip(char trip);
 
-        public abstract void AddWay(string way);
+        public abstract void AddTrip(string trip);
 
-        public abstract void AddWay(int way);
+        public abstract void AddTrip(int trip);
 
-        public abstract void AddWay(double way);
+        public abstract void AddTrip(double trip);
 
         public abstract Statistics GetStatistics();
     }

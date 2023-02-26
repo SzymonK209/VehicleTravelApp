@@ -4,7 +4,7 @@ namespace VehicleTravelApp
 {
     public interface IVehicle
     {
-        event WayAddedDelegate WayAdded;
+        event TripAddedDelegate TripAdded;
         
         string Brand { get; }
         
@@ -14,15 +14,15 @@ namespace VehicleTravelApp
 
         string Driver { get; }
 
-        void AddWay(float way);
+        void AddTrip(float trip);
 
-        void AddWay(char way);
+        void AddTrip(char trip);
 
-        void AddWay(string way);
+        void AddTrip(string trip);
 
-        void AddWay(int way);
+        void AddTrip(int trip);
 
-        void AddWay(double way);
+        void AddTrip(double trip);
 
         Statistics GetStatistics();
     }

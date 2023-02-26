@@ -55,17 +55,17 @@ namespace VehicleTravelApp
                         continue;
                 }
             }
-            WritelineColor(ConsoleColor.DarkYellow, "\n\nBye Bye! Press any key to leave.");
+            WritelineColor(ConsoleColor.DarkYellow, "\n\nThank you for using my program and see you soon. Press any key to leave.");
             Console.ReadKey();
         }
 
         static string DataInput(string comment)
         {
             string input;
-            
-            while (true)
+
+            do
             {
-                
+
                 input = null;
                 WritelineColor(ConsoleColor.Yellow, comment);
                 var dataInput = Console.ReadLine();
@@ -78,7 +78,7 @@ namespace VehicleTravelApp
                 {
                     WritelineColor(ConsoleColor.Red, "Data cannot be left blank, please try again!");
                 }
-            }
+            } while (true);
             return input;
         }
 
@@ -150,16 +150,16 @@ namespace VehicleTravelApp
                 {
                     string driver = DriverInput();
                     var vehicle = new CarInFile("Ford", "Galaxy", 2010, driver);
-                    vehicle.WayAdded += CarWayAdded;
-                    AddWayCar(vehicle);
+                    vehicle.TripAdded += CarTripAdded;
+                    AddTripCar(vehicle);
                     break;
                 }
                 else if (carInput == "N")
                 {
                     string driver = DriverInput();
                     var vehicle = new CarInFile("Nissan", "Primastar", 2005, driver);
-                    vehicle.WayAdded += CarWayAdded;
-                    AddWayCar(vehicle);
+                    vehicle.TripAdded += CarTripAdded;
+                    AddTripCar(vehicle);
                     break;
                 }
                 else if (carInput == "C")
@@ -170,8 +170,8 @@ namespace VehicleTravelApp
                     int year = YearInput();
                     string driver = DriverInput();
                     var vehicle = new CarInFile(brand, model, year, driver);
-                    vehicle.WayAdded += CarWayAdded;
-                    AddWayCar(vehicle);
+                    vehicle.TripAdded += CarTripAdded;
+                    AddTripCar(vehicle);
                     break;
                 }
                 else
@@ -195,16 +195,16 @@ namespace VehicleTravelApp
                 {
                     string driver = DriverInput();
                     var vehicle = new MotorcycleInFile("Benelli", "TRK 502", 2019, driver);
-                    vehicle.WayAdded += MotoWayAdded;
-                    AddWayMoto(vehicle);
+                    vehicle.TripAdded += MotoTripAdded;
+                    AddTripMoto(vehicle);
                     break;
                 }
                 else if (motoInput == "H")
                 {
                     string driver = DriverInput();
                     var vehicle = new MotorcycleInFile("Honda", "Deauville", 2007, driver);
-                    vehicle.WayAdded += MotoWayAdded;
-                    AddWayMoto(vehicle);
+                    vehicle.TripAdded += MotoTripAdded;
+                    AddTripMoto(vehicle);
                     break;
                 }
                 else if (motoInput == "C")
@@ -215,8 +215,8 @@ namespace VehicleTravelApp
                     int year = YearInput();
                     string driver = DriverInput();
                     var vehicle = new MotorcycleInFile(brand, model, year, driver);
-                    vehicle.WayAdded += MotoWayAdded;
-                    AddWayMoto(vehicle);
+                    vehicle.TripAdded += MotoTripAdded;
+                    AddTripMoto(vehicle);
                     break;
                 }
                 else
@@ -227,24 +227,26 @@ namespace VehicleTravelApp
             }
         }
 
-        private static void AddWayMoto(IVehicle vehicle)
+        private static void AddTripMoto(IVehicle vehicle)
         {
             while (true)
             {
                 WritelineColor(ConsoleColor.Yellow, "Enter the next way in km, or select from the list:  \n");
                 WritelineColor(ConsoleColor.Cyan,   "     W - route to and from work (~21km)             \n" +
                                                     "     B - route to the store and back (~17km)        \n" +
-                                                    "     S - route to school children and back (~2,10km)\n" +
+                                                    "     Z - route to Zakpane and back (~173km)\n" +
+                                                    "     L - route to the lake Rożnowskie and back (~190km)\n" +
                                                     "     Q - view statistics                            \n");
-                var inputWay = Console.ReadLine().ToUpper();
-                if (inputWay == "Q")
+                
+                var inputTrip = Console.ReadLine().ToUpper();
+                if (inputTrip == "Q")
                 {
                     VievStatistics(vehicle);
                     break;
                 }
                 try
                 {
-                    vehicle.AddWay(inputWay);
+                    vehicle.AddTrip(inputTrip);
                 }
                 catch (Exception ex)
                 {
@@ -252,24 +254,26 @@ namespace VehicleTravelApp
                 }
             }
         }
-        private static void AddWayCar(IVehicle vehicle)
+        private static void AddTripCar(IVehicle vehicle)
         {
             while (true)
             {
                 WritelineColor(ConsoleColor.Yellow, "Enter the next way in km, or select from the list:  \n");
                 WritelineColor(ConsoleColor.Cyan,   "     W - route to and from work (~21km)             \n" +
                                                     "     B - route to the store and back (~17km)        \n" +
-                                                    "     S - route to school children and back (~2,10km)\n" +
+                                                    "     S - route to chldren's school and back (~2,1km)\n" +
+                                                    "     F - route to children's football school and back (~13,8km)\n" +
                                                     "     Q - view statistics                            \n");
-                var inputWay = Console.ReadLine().ToUpper();
-                if (inputWay == "Q")
+                
+                var inputTrip = Console.ReadLine().ToUpper();
+                if (inputTrip == "Q")
                 {
                     VievStatistics(vehicle);
                     break;
                 }
                 try
                 {
-                    vehicle.AddWay(inputWay);
+                    vehicle.AddTrip(inputTrip);
                 }
                 catch (Exception ex)
                 {
@@ -284,7 +288,7 @@ namespace VehicleTravelApp
 
             Console.WriteLine("----------------------------------------------------------------");
             Console.ForegroundColor = ConsoleColor.DarkGreen;
-            Console.WriteLine($"The Vehicle \n{vehicle.Brand} {vehicle.Model} {vehicle.Year}year, made {statistics.Count} trips");
+            Console.WriteLine($"The Vehicle \n{vehicle.Brand} {vehicle.Model} {vehicle.Year} year, with a driver {vehicle.Driver}, made {statistics.Count} trips.");
             Console.WriteLine($"Total distance: {statistics.Sum:N2}km");
             Console.WriteLine($"Average distance: {statistics.Average:N2}km");
             Console.WriteLine($"Maximum distance: {statistics.Max:N2}");
@@ -293,14 +297,14 @@ namespace VehicleTravelApp
             Console.ResetColor();
         }
 
-        static void CarWayAdded(object sender, EventArgs args)
+        static void CarTripAdded(object sender, EventArgs args)
         {
-            WritelineColor(ConsoleColor.Blue, "A new way has been added!\n");
+            WritelineColor(ConsoleColor.Blue, "A new trip has been added!\n");
         }
 
-        static void MotoWayAdded(object sender, EventArgs args)
+        static void MotoTripAdded(object sender, EventArgs args)
         {
-            WritelineColor(ConsoleColor.Blue, "A new way has been added!\n");
+            WritelineColor(ConsoleColor.Blue, "A new trip has been added!\n");
         }
 
         private static void WritelineColor(ConsoleColor color, string text)
