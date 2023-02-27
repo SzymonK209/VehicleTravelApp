@@ -128,9 +128,16 @@ namespace VehicleTravelApp
         }
         public override Statistics GetStatistics()
         {
-            var tripsFromFile = this.ReadTripsFromFile();
-            var statistics = this.CountStatistics(tripsFromFile);
+            var statistics = new Statistics();
+            var trips = ReadTripsFromFile();
+
+            foreach (var trip in trips)
+            {
+                statistics.AddTrip(trip);
+            }
+
             return statistics;
+
         }
 
         private List<float> ReadTripsFromFile()
@@ -150,19 +157,6 @@ namespace VehicleTravelApp
                 }
             }
             return trips;
-        }
-
-        private Statistics CountStatistics(List<float> trips)
-        {
-            var statistics = new Statistics();
-
-            foreach (var trip in trips)
-            {
-                statistics.AddTrip(trip);
-            }
-
-            return statistics;
-
         }
     }
 }

@@ -9,7 +9,7 @@ namespace VehicleTravelApp.Tests
         public void WhenVehicleMakeAFewTrips_ShouldReturnCorrectResult()
         {
             //arrange
-            var vehicle = new MotorcycleInFile("Benelli", "TRK 502", 2019, "Szymon");
+            var vehicle = new MotorcycleInMemory("Benelli", "TRK 502", 2019, "Szymon");
             vehicle.AddTrip(100);
             vehicle.AddTrip(5);
             vehicle.AddTrip(45);

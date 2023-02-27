@@ -72,7 +72,7 @@
         public void WhenVehicleMakeAFewTrips_ShouldReturnCorrectResult()
         {
             //arrange
-            var vehicle = new MotorcycleInFile("Honda", "Deauville", 2007, "Szymon");
+            var vehicle = new MotorcycleInMemory("Honda", "Deauville", 2007, "Szymon");
             vehicle.AddTrip(100);
             vehicle.AddTrip(5);
             vehicle.AddTrip(45);
@@ -88,9 +88,9 @@
 
 
         }
-        private MotorcycleInFile GetVehicle(string brand, string model, int year, string driver)
+        private MotorcycleInMemory GetVehicle(string brand, string model, int year, string driver)
         {
-            return new MotorcycleInFile(brand, model, year, driver);
+            return new MotorcycleInMemory(brand, model, year, driver);
         }
     }
 }

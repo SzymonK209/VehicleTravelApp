@@ -1,25 +1,25 @@
-﻿
-using System.Diagnostics;
-using System.Reflection;
-using System.Xml.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace VehicleTravelApp
 {
-    public class CarInFile : VehicleBase
+    public class MotorcycleInMemory : VehicleBase
     {
         public override event TripAddedDelegate TripAdded;
-
-        private const string fileName = "CarTrip.txt";
 
         private string brand;
         private string model;
         private string driver;
-        private string fullFileName;
+        
+        private List<float> trips = new List<float>();
 
-        public CarInFile(string brand, string model, int year, string driver)
+        public MotorcycleInMemory(string brand, string model, int year, string driver)
             : base(brand, model, year, driver)
         {
-            fullFileName = $"{brand}_{model}_{driver}_{fileName}";
+
         }
 
         public override string Brand
@@ -67,24 +67,21 @@ namespace VehicleTravelApp
                 }
             }
         }
-        
+
         public override void AddTrip(float trip)
         {
-            using (var writer = File.AppendText(fullFileName))
+            if (trip >= 0 && trip <= float.MaxValue)
             {
-                if (trip >= 0 && trip <= float.MaxValue)
-                {
-                    writer.WriteLine(trip);
+                this.trips.Add(trip);
 
-                    if (TripAdded != null)
-                    {
-                        TripAdded(this, new EventArgs());
-                    }
-                }
-                else
+                if (TripAdded != null)
                 {
-                    throw new Exception("Invalid distans value! \n");
+                    TripAdded(this, new EventArgs());
                 }
+            }
+            else
+            {
+                throw new Exception("Invalid distans value! \n");
             }
         }
 
@@ -94,8 +91,8 @@ namespace VehicleTravelApp
             {
                 'W' or 'w' => 21,
                 'B' or 'b' => 17,
-                'S' or 's' => 2.1f,
-                'F' or 'f' => 13.8f,
+                'Z' or 'z' => 173,
+                'L' or 'l' => 190,
                 _ => throw new Exception("Incorrect Letter! \n"),
             };
 
@@ -134,34 +131,14 @@ namespace VehicleTravelApp
         public override Statistics GetStatistics()
         {
             var statistics = new Statistics();
-            var trips = ReadTripsFromFile();
 
-            foreach (var trip in trips)
+            foreach (var trip in this.trips)
             {
                 statistics.AddTrip(trip);
             }
 
             return statistics;
-        }
 
-        private List<float> ReadTripsFromFile()
-        {
-            var trips = new List<float>();
-            if (File.Exists($"{fullFileName}"))
-            {
-                using (var reader = File.OpenText($"{fullFileName}"))
-                {
-                    var line = reader.ReadLine();
-                    while (line != null)
-                    {
-                        var number = float.Parse(line);
-                        trips.Add(number);
-                        line = reader.ReadLine();
-                    }
-                }
-            }
-            return trips;
-        }       
+        }
     }
 }
-
