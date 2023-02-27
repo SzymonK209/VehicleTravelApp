@@ -8,7 +8,6 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VehicleTravelApp
 {
-
     class Program
     {
         static void Main(string[] args)
@@ -31,14 +30,9 @@ namespace VehicleTravelApp
             while (!CloseApp)
             {
                 WritelineColor(ConsoleColor.Yellow, "Select type of memory:\n");
-                WritelineColor(ConsoleColor.Cyan,   "   Please select the F key on the keyboard if you want to save the data to a file,\n" +
-                                                    "   or\n" +
-                                                    "   Please select the M key on the keyboard if you want to use program memory,\n" +
-                                                    "   If you want to end the program, select X\n" +
-                                                    "   then confirm by pressing Enter\n");
-                
-                var selectMemory = Console.ReadLine().ToUpper();
-
+                var selectMemory = GetValueFromUser("   Please select the F key on the keyboard if you want to save the data to a file, or\n" +
+                                                    "   please select the M key on the keyboard if you want to use program memory,\n" +
+                                                    "   if you want to end the program, select X, then confirm by pressing Enter\n");
                 switch (selectMemory)
                     {
                     case "X":
@@ -61,17 +55,21 @@ namespace VehicleTravelApp
 
         private static void VehicleInFile()  
         {
-            while (true)
+            bool backSelectMemory = false;
+
+            while (!backSelectMemory)
             {
                 WritelineColor(ConsoleColor.Yellow, "Select the type of vehicle by pressing the appropriate key:\n ");
-                WritelineColor(ConsoleColor.Cyan,   "   C - Adding a car ride\n" +
+                var userInput = GetValueFromUser(   "   C - Adding a car ride\n" +
                                                     "   M - Adding a motorcycle ride\n" +
-                                                    "   A - Another vehicle\n");
-                                                    
-                var userInput = Console.ReadLine().ToUpper();
-
+                                                    "   A - Another vehicle\n" +
+                                                    "   B - back to select memory type\n");
                 switch (userInput)
                 {
+                    case "B":
+                        backSelectMemory = true;
+                        break;
+
                     case "C":
                         CarInFile();
                         break;
@@ -86,25 +84,29 @@ namespace VehicleTravelApp
                         continue;
 
                     default:
-                        WritelineColor(ConsoleColor.Red, "Invalid operation.\n");
+                        WritelineColor(ConsoleColor.Red, "Invalid operation! Pleace try again\n");
                         continue;
                 }
             }
-            
         }
+
         private static void VehicleInMemory()
         {
-            while (true)
+            bool backSelectMemory = false;
+
+            while (!backSelectMemory)
             {
                 WritelineColor(ConsoleColor.Yellow, "Select the type of vehicle by pressing the appropriate key:\n ");
-                WritelineColor(ConsoleColor.Cyan,   "   C - Adding a car ride\n" +
+                var userInput = GetValueFromUser(   "   C - Adding a car ride\n" +
                                                     "   M - Adding a motorcycle ride\n" +
-                                                    "   A - Another vehicle\n");
-
-                var userInput = Console.ReadLine().ToUpper();
-
+                                                    "   A - Another vehicle\n" +
+                                                    "   B - back to select memory type\n");
                 switch (userInput)
                 {
+                    case "B":
+                        backSelectMemory = true;
+                        break;
+
                     case "C":
                         CarInMemory();
                         break;
@@ -119,22 +121,22 @@ namespace VehicleTravelApp
                         continue;
 
                     default:
-                        WritelineColor(ConsoleColor.Red, "Invalid operation.\n");
+                        WritelineColor(ConsoleColor.Red, "Invalid operation! Pleace try again\n");
                         continue;
                 }
             }
         }
 
-        static string DataInput(string comment)
+        private static string DataInput(string comment)
         {
             string input;
 
             do
             {
-
                 input = null;
-                WritelineColor(ConsoleColor.Yellow, comment);
-                var dataInput = Console.ReadLine();
+
+                var dataInput = GetValueFromUser(comment); 
+
                 if (!string.IsNullOrEmpty(dataInput))
                 {
                     input = dataInput;
@@ -145,10 +147,11 @@ namespace VehicleTravelApp
                     WritelineColor(ConsoleColor.Red, "Data cannot be left blank, pleace try again!");
                 }
             } while (true);
+
             return input;
         }
 
-        static int YearInput()
+        private static int YearInput()
         {
             int year;
             
@@ -168,13 +171,13 @@ namespace VehicleTravelApp
             return year;
         }
 
-        static string DriverInput()
+        private static string DriverInput()
         {
             string input;
             
             while (true)
             {
-                WritelineColor(ConsoleColor.Yellow,   "Pleace choise driver or create new\n");
+                WritelineColor(ConsoleColor.Yellow, "Pleace choise driver or create new, by pressing the appropriate key:\n");
                 string driverInput = GetValueFromUser("     S - Szymon\n" +
                                                       "     A - Agata\n" +
                                                       "     N - new driver\n");
@@ -191,7 +194,7 @@ namespace VehicleTravelApp
                 }
                 else if (driverInput == "N")
                 {
-                    WritelineColor(ConsoleColor.Yellow, "Pleace enter driver details");
+                    WritelineColor(ConsoleColor.Yellow, "Enter driver details");
                     input = DataInput("Pleace enter name of driver:");
                     break;
                 }
@@ -207,7 +210,7 @@ namespace VehicleTravelApp
         {
             while (true)
             {
-                WritelineColor(ConsoleColor.Yellow, "Pleace choise car or create new\n");
+                WritelineColor(ConsoleColor.Yellow, "Pleace choise car or create new, by pressing the appropriate key:\n");
                 string carInput = GetValueFromUser( "   F - Ford Galaxy\n" +
                                                     "   N - Nissan Primastar\n" +
                                                     "   C - create new car\n");
@@ -252,8 +255,8 @@ namespace VehicleTravelApp
         {
             while (true)
             {
-                WritelineColor(ConsoleColor.Yellow, "Pleace choise car or create new\n");
-                string carInput = GetValueFromUser("   F - Ford Galaxy\n" +
+                WritelineColor(ConsoleColor.Yellow, "Pleace choise car or create new, by pressing the appropriate key:\n");
+                string carInput = GetValueFromUser( "   F - Ford Galaxy\n" +
                                                     "   N - Nissan Primastar\n" +
                                                     "   C - create new car\n");
 
@@ -297,7 +300,7 @@ namespace VehicleTravelApp
         {
             while (true)
             {
-                WritelineColor(ConsoleColor.Yellow, "Pleace choise motorcycle or create new\n");
+                WritelineColor(ConsoleColor.Yellow, "Pleace choise motorcycle or create new, by pressing the appropriate key:\n");
                 string motoInput = GetValueFromUser("   B - Benelli TRK 502\n" +
                                                     "   H - Honda Dauville\n" +
                                                     "   C - create new moto\n");
@@ -342,7 +345,7 @@ namespace VehicleTravelApp
         {
             while (true)
             {
-                WritelineColor(ConsoleColor.Yellow, "Pleace choise motorcycle or create new\n");
+                WritelineColor(ConsoleColor.Yellow, "Pleace choise motorcycle or create new, by pressing the appropriate key:\n");
                 string motoInput = GetValueFromUser("   B - Benelli TRK 502\n" +
                                                     "   H - Honda Dauville\n" +
                                                     "   C - create new moto\n");
@@ -383,7 +386,6 @@ namespace VehicleTravelApp
             }
         }
 
-
         private static void AddTripMoto(IVehicle vehicle)
         {
             while (true)
@@ -411,6 +413,7 @@ namespace VehicleTravelApp
                 }
             }
         }
+
         private static void AddTripCar(IVehicle vehicle)
         {
             while (true)
@@ -439,6 +442,7 @@ namespace VehicleTravelApp
 
             }
         }
+
         private static void VievStatistics(IVehicle vehicle)
         {
             var statistics = vehicle.GetStatistics();
@@ -450,26 +454,26 @@ namespace VehicleTravelApp
             Console.WriteLine($"Average distance: {statistics.Average:N2}km");
             Console.WriteLine($"Maximum distance: {statistics.Max:N2}");
             Console.WriteLine($"Minimum distance: {statistics.Min:N2}");
-            Console.WriteLine($"Commentary: {statistics.AverageComent}\n");
+            Console.WriteLine($"Humorous commentary depending on mileage: {statistics.AverageComent}\n");
             Console.ResetColor();
         }
 
-        static void CarTripAddedInFile(object sender, EventArgs args)
+        private static void CarTripAddedInFile(object sender, EventArgs args)
         {
             WritelineColor(ConsoleColor.Blue, "A new trip has been added in file!\n");
         }
 
-        static void MotoTripAddedInFile(object sender, EventArgs args)
+        private static void MotoTripAddedInFile(object sender, EventArgs args)
         {
             WritelineColor(ConsoleColor.Blue, "A new trip has been added in file!\n");
         }
 
-        static void CarTripAdded(object sender, EventArgs args)
+        private static void CarTripAdded(object sender, EventArgs args)
         {
             WritelineColor(ConsoleColor.Blue, "A new trip has been added in memory!\n");
         }
 
-        static void MotoTripAdded(object sender, EventArgs args)
+        private static void MotoTripAdded(object sender, EventArgs args)
         {
             WritelineColor(ConsoleColor.Blue, "A new trip has been added in memory!\n");
         }
@@ -480,11 +484,13 @@ namespace VehicleTravelApp
             Console.WriteLine(text);
             Console.ResetColor();
         }
+
         private static string GetValueFromUser(string comment)
         {
             WritelineColor(ConsoleColor.Cyan, comment);
             string input = Console.ReadLine();
             string userInput = ($"{char.ToUpper(input[0])}{input.Substring(1, input.Length - 1).ToLower()}");
+            Console.WriteLine();
             return userInput;
         }
     }

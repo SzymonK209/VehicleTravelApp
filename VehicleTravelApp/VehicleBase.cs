@@ -34,7 +34,6 @@ namespace VehicleTravelApp
         public abstract void AddTrip(double trip);
 
         public abstract Statistics GetStatistics();
-
     }
 }
 

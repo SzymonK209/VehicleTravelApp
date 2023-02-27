@@ -131,6 +131,7 @@ namespace VehicleTravelApp
             float tripInDouble = (float)trip;
             this.AddTrip(tripInDouble);
         }
+
         public override Statistics GetStatistics()
         {
             var statistics = new Statistics();
