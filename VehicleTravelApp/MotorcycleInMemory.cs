@@ -1,71 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VehicleTravelApp
+﻿namespace VehicleTravelApp
 {
     public class MotorcycleInMemory : VehicleBase
     {
         public override event TripAddedDelegate TripAdded;
-
-        private string brand;
-        private string model;
-        private string driver;
         
         private List<float> trips = new List<float>();
 
         public MotorcycleInMemory(string brand, string model, int year, string driver)
             : base(brand, model, year, driver)
         {
-
-        }
-
-        public override string Brand
-        {
-            get
-            {
-                return $"{char.ToUpper(brand[0])}{brand.Substring(1, brand.Length - 1).ToLower()}";
-            }
-            set
-            {
-                if (!string.IsNullOrEmpty(value))
-                {
-                    brand = value;
-                }
-            }
-
-        }
-
-        public override string Model
-        {
-            get
-            {
-                return $"{char.ToUpper(model[0])}{model.Substring(1, model.Length - 1).ToLower()}";
-            }
-            set
-            {
-                if (!string.IsNullOrEmpty(value))
-                {
-                    model = value;
-                }
-            }
-        }
-
-        public override string Driver
-        {
-            get
-            {
-                return $"{char.ToUpper(driver[0])}{driver.Substring(1, driver.Length - 1).ToLower()}";
-            }
-            set
-            {
-                if (!string.IsNullOrEmpty(value))
-                {
-                    driver = value;
-                }
-            }
+            
         }
 
         public override void AddTrip(float trip)
@@ -101,33 +45,6 @@ namespace VehicleTravelApp
             }
         }
 
-        public override void AddTrip(string trip)
-        {
-            if (float.TryParse(trip, out float tripInString))
-            {
-                this.AddTrip(tripInString);
-            }
-            else if (char.TryParse(trip, out char tripInLeatters))
-            {
-                this.AddTrip(tripInLeatters);
-            }
-            else
-            {
-                throw new Exception("String is not float! \n");
-            }
-        }
-
-        public override void AddTrip(int trip)
-        {
-            float tripInInt = (float)trip;
-            this.AddTrip(tripInInt);
-        }
-
-        public override void AddTrip(double trip)
-        {
-            float tripInDouble = (float)trip;
-            this.AddTrip(tripInDouble);
-        }
         public override Statistics GetStatistics()
         {
             var statistics = new Statistics();

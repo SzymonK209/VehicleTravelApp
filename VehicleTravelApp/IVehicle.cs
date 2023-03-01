@@ -24,6 +24,8 @@ namespace VehicleTravelApp
 
         void AddTrip(double trip);
 
+        void VievStatistics();
+
         Statistics GetStatistics();
     }
 }

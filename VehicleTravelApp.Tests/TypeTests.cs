@@ -3,16 +3,25 @@
     public class TypeTests
     {
         [Test]
-        public void GetTwoNumber_ShouldDifferentObject()
+        public void GetTwoNumber_ShouldCorectResult()
         {
             //arrange
             int number1 = 1;
             int number2 = 2;
 
             //act
+            int number3 = number2 + number1;
+            int number4 = number3 - number2;
+            int number5 = number4 * number3;
+            int number6 = number5 / number4;
 
             //assert
             Assert.AreNotEqual(number1, number2);
+            Assert.AreEqual(3, number3);
+            Assert.AreEqual(1, number4);
+            Assert.AreEqual(3, number5);
+            Assert.AreEqual(3, number6);
+
         }
 
         [Test]
@@ -50,7 +59,7 @@
         }
 
         [Test]
-        public void GetNewVehicle_ShouldDifferentObject()
+        public void GetNewObject_ShouldDifferentObject()
         {
             //arrange
             var vehicle1 = GetVehicle("Benelli", "TRK 502", 2019, "Szymon");

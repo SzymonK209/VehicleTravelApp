@@ -1,12 +1,4 @@
-﻿using System;
-using System.Diagnostics.Metrics;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace VehicleTravelApp
+﻿namespace VehicleTravelApp
 {
     class Program
     {
@@ -24,7 +16,6 @@ namespace VehicleTravelApp
                 "   You can also use shortcuts by selecting the appropriate character from the menu. \n\n" +
                 "==================================================================================\n\n");
 
-           
             bool CloseApp = false;
 
             while (!CloseApp)
@@ -49,7 +40,7 @@ namespace VehicleTravelApp
                         continue;
                 }
             }
-            WritelineColor(ConsoleColor.DarkYellow, "\n\nThank you for using my program and see you soon. Press any key to leave.");
+            WritelineColor(ConsoleColor.Blue, "\n\nThank you for using my program and see you soon. Press any key to leave.");
             Console.ReadKey();
         }
 
@@ -126,38 +117,14 @@ namespace VehicleTravelApp
                 }
             }
         }
-
-        private static string DataInput(string comment)
-        {
-            string input;
-
-            do
-            {
-                input = null;
-
-                var dataInput = GetValueFromUser(comment); 
-
-                if (!string.IsNullOrEmpty(dataInput))
-                {
-                    input = dataInput;
-                    break;
-                }
-                else
-                {
-                    WritelineColor(ConsoleColor.Red, "Data cannot be left blank, pleace try again!");
-                }
-            } while (true);
-
-            return input;
-        }
-
+         
         private static int YearInput()
         {
             int year;
-            
+
             while (true)
             {
-                WritelineColor(ConsoleColor.Yellow, "E nter the year of manufacture of the vehicle:");
+                WritelineColor(ConsoleColor.Yellow, "Enter the year of manufacture of the vehicle:");
                 bool yearInInt = int.TryParse(Console.ReadLine(), out year);
                 if (year > 1886 && year <= 3000)
                 {
@@ -181,7 +148,6 @@ namespace VehicleTravelApp
                 string driverInput = GetValueFromUser("     S - Szymon\n" +
                                                       "     A - Agata\n" +
                                                       "     N - new driver\n");
-                
                 if (driverInput == "S")
                 {
                     input = "Szymon";
@@ -195,7 +161,7 @@ namespace VehicleTravelApp
                 else if (driverInput == "N")
                 {
                     WritelineColor(ConsoleColor.Yellow, "Enter driver details");
-                    input = DataInput("Pleace enter name of driver:");
+                    input = GetValueFromUser("Pleace enter name of driver:");
                     break;
                 }
                 else
@@ -214,12 +180,11 @@ namespace VehicleTravelApp
                 string carInput = GetValueFromUser( "   F - Ford Galaxy\n" +
                                                     "   N - Nissan Primastar\n" +
                                                     "   C - create new car\n");
-                
                 if (carInput == "F")
                 {
                     string driver = DriverInput();
                     var vehicle = new CarInFile("Ford", "Galaxy", 2010, driver);
-                    vehicle.TripAdded += CarTripAddedInFile;
+                    vehicle.TripAdded += TripAddedInFile;
                     AddTripCar(vehicle);
                     break;
                 }
@@ -227,19 +192,19 @@ namespace VehicleTravelApp
                 {
                     string driver = DriverInput();
                     var vehicle = new CarInFile("Nissan", "Primastar", 2005, driver);
-                    vehicle.TripAdded += CarTripAddedInFile;
+                    vehicle.TripAdded += TripAddedInFile;
                     AddTripCar(vehicle);
                     break;
                 }
                 else if (carInput == "C")
                 {
                     WritelineColor(ConsoleColor.Yellow, "Provide car details");
-                    string brand = DataInput("Pleace enter brand of car:");
-                    string model = DataInput("Pleace enter model of car:");
+                    string brand = GetValueFromUser("Pleace enter brand of car:");
+                    string model = GetValueFromUser("Pleace enter model of car:");
                     int year = YearInput();
                     string driver = DriverInput();
                     var vehicle = new CarInFile(brand, model, year, driver);
-                    vehicle.TripAdded += CarTripAddedInFile;
+                    vehicle.TripAdded += TripAddedInFile;
                     AddTripCar(vehicle);
                     break;
                 }
@@ -259,12 +224,11 @@ namespace VehicleTravelApp
                 string carInput = GetValueFromUser( "   F - Ford Galaxy\n" +
                                                     "   N - Nissan Primastar\n" +
                                                     "   C - create new car\n");
-
                 if (carInput == "F")
                 {
                     string driver = DriverInput();
                     var vehicle = new CarInMemory("Ford", "Galaxy", 2010, driver);
-                    vehicle.TripAdded += CarTripAdded;
+                    vehicle.TripAdded += TripAdded;
                     AddTripCar(vehicle);
                     break;
                 }
@@ -272,19 +236,19 @@ namespace VehicleTravelApp
                 {
                     string driver = DriverInput();
                     var vehicle = new CarInMemory("Nissan", "Primastar", 2005, driver);
-                    vehicle.TripAdded += CarTripAdded;
+                    vehicle.TripAdded += TripAdded;
                     AddTripCar(vehicle);
                     break;
                 }
                 else if (carInput == "C")
                 {
                     WritelineColor(ConsoleColor.Yellow, "Provide car details");
-                    string brand = DataInput("Pleace enter brand of car:");
-                    string model = DataInput("Pleace enter model of car:");
+                    string brand = GetValueFromUser("Pleace enter brand of car:");
+                    string model = GetValueFromUser("Pleace enter model of car:");
                     int year = YearInput();
                     string driver = DriverInput();
                     var vehicle = new CarInMemory(brand, model, year, driver);
-                    vehicle.TripAdded += CarTripAdded;
+                    vehicle.TripAdded += TripAdded;
                     AddTripCar(vehicle);
                     break;
                 }
@@ -304,12 +268,11 @@ namespace VehicleTravelApp
                 string motoInput = GetValueFromUser("   B - Benelli TRK 502\n" +
                                                     "   H - Honda Dauville\n" +
                                                     "   C - create new moto\n");
-                
                 if (motoInput == "B")
                 {
                     string driver = DriverInput();
                     var vehicle = new MotorcycleInFile("Benelli", "TRK 502", 2019, driver);
-                    vehicle.TripAdded += MotoTripAddedInFile;
+                    vehicle.TripAdded += TripAddedInFile;
                     AddTripMoto(vehicle);
                     break;
                 }
@@ -317,19 +280,19 @@ namespace VehicleTravelApp
                 {
                     string driver = DriverInput();
                     var vehicle = new MotorcycleInFile("Honda", "Deauville", 2007, driver);
-                    vehicle.TripAdded += MotoTripAddedInFile;
+                    vehicle.TripAdded += TripAddedInFile;
                     AddTripMoto(vehicle);
                     break;
                 }
                 else if (motoInput == "C")
                 {
                     WritelineColor(ConsoleColor.Yellow, "Enter the details of the new motorcycle");
-                    string brand = DataInput("Pleace enter brand of motorcycle:");
-                    string model = DataInput("Pleace enter model of motorcycle:");
+                    string brand = GetValueFromUser("Pleace enter brand of motorcycle:");
+                    string model = GetValueFromUser("Pleace enter model of motorcycle:");
                     int year = YearInput();
                     string driver = DriverInput();
                     var vehicle = new MotorcycleInFile(brand, model, year, driver);
-                    vehicle.TripAdded += MotoTripAddedInFile;
+                    vehicle.TripAdded += TripAddedInFile;
                     AddTripMoto(vehicle);
                     break;
                 }
@@ -354,7 +317,7 @@ namespace VehicleTravelApp
                 {
                     string driver = DriverInput();
                     var vehicle = new MotorcycleInMemory("Benelli", "TRK 502", 2019, driver);
-                    vehicle.TripAdded += MotoTripAdded;
+                    vehicle.TripAdded += TripAdded;
                     AddTripMoto(vehicle);
                     break;
                 }
@@ -362,19 +325,19 @@ namespace VehicleTravelApp
                 {
                     string driver = DriverInput();
                     var vehicle = new MotorcycleInMemory("Honda", "Deauville", 2007, driver);
-                    vehicle.TripAdded += MotoTripAdded;
+                    vehicle.TripAdded += TripAdded;
                     AddTripMoto(vehicle);
                     break;
                 }
                 else if (motoInput == "C")
                 {
                     WritelineColor(ConsoleColor.Yellow, "Enter the details of the new motorcycle");
-                    string brand = DataInput("Pleace enter brand of motorcycle:");
-                    string model = DataInput("Pleace enter model of motorcycle:");
+                    string brand = GetValueFromUser("Pleace enter brand of motorcycle:");
+                    string model = GetValueFromUser("Pleace enter model of motorcycle:");
                     int year = YearInput();
                     string driver = DriverInput();
                     var vehicle = new MotorcycleInMemory(brand, model, year, driver);
-                    vehicle.TripAdded += MotoTripAdded;
+                    vehicle.TripAdded += TripAdded;
                     AddTripMoto(vehicle);
                     break;
                 }
@@ -391,16 +354,14 @@ namespace VehicleTravelApp
             while (true)
             {
                 WritelineColor(ConsoleColor.Yellow, "Enter the next trip in km, or select from the list:  \n");
-                WritelineColor(ConsoleColor.Cyan,   "     W - route to and from work (~21km)             \n" +
+                var inputTrip = GetValueFromUser(   "     W - route to and from work (~21km)             \n" +
                                                     "     B - route to the store and back (~17km)        \n" +
                                                     "     Z - route to Zakpane and back (~173km)\n" +
                                                     "     L - route to the lake Rożnowskie and back (~190km)\n" +
                                                     "     Q - view statistics                            \n");
-                
-                var inputTrip = Console.ReadLine().ToUpper();
                 if (inputTrip == "Q")
                 {
-                    VievStatistics(vehicle);
+                    vehicle.VievStatistics();
                     break;
                 }
                 try
@@ -419,16 +380,14 @@ namespace VehicleTravelApp
             while (true)
             {
                 WritelineColor(ConsoleColor.Yellow, "Enter the next trip in km, or select from the list:  \n");
-                WritelineColor(ConsoleColor.Cyan,   "     W - route to and from work (~21km)             \n" +
+                var inputTrip = GetValueFromUser(   "     W - route to and from work (~21km)             \n" +
                                                     "     B - route to the store and back (~17km)        \n" +
                                                     "     S - route to chldren's school and back (~2,1km)\n" +
                                                     "     F - route to children's football school and back (~13,8km)\n" +
                                                     "     Q - view statistics                            \n");
-                
-                var inputTrip = Console.ReadLine().ToUpper();
                 if (inputTrip == "Q")
                 {
-                    VievStatistics(vehicle);
+                    vehicle.VievStatistics();
                     break;
                 }
                 try
@@ -439,41 +398,15 @@ namespace VehicleTravelApp
                 {
                     WritelineColor(ConsoleColor.Red, $"{ ex.Message}");
                 }
-
             }
         }
 
-        private static void VievStatistics(IVehicle vehicle)
-        {
-            var statistics = vehicle.GetStatistics();
-
-            Console.WriteLine("----------------------------------------------------------------");
-            Console.ForegroundColor = ConsoleColor.DarkGreen;
-            Console.WriteLine($"The Vehicle \n{vehicle.Brand} {vehicle.Model} {vehicle.Year} year, with a driver {vehicle.Driver}, made {statistics.Count} trips.");
-            Console.WriteLine($"Total distance: {statistics.Sum:N2}km");
-            Console.WriteLine($"Average distance: {statistics.Average:N2}km");
-            Console.WriteLine($"Maximum distance: {statistics.Max:N2}");
-            Console.WriteLine($"Minimum distance: {statistics.Min:N2}");
-            Console.WriteLine($"Humorous commentary depending on mileage: {statistics.AverageComent}\n");
-            Console.ResetColor();
-        }
-
-        private static void CarTripAddedInFile(object sender, EventArgs args)
+        private static void TripAddedInFile(object sender, EventArgs args)
         {
             WritelineColor(ConsoleColor.Blue, "A new trip has been added in file!\n");
         }
 
-        private static void MotoTripAddedInFile(object sender, EventArgs args)
-        {
-            WritelineColor(ConsoleColor.Blue, "A new trip has been added in file!\n");
-        }
-
-        private static void CarTripAdded(object sender, EventArgs args)
-        {
-            WritelineColor(ConsoleColor.Blue, "A new trip has been added in memory!\n");
-        }
-
-        private static void MotoTripAdded(object sender, EventArgs args)
+        private static void TripAdded(object sender, EventArgs args)
         {
             WritelineColor(ConsoleColor.Blue, "A new trip has been added in memory!\n");
         }
@@ -488,10 +421,23 @@ namespace VehicleTravelApp
         private static string GetValueFromUser(string comment)
         {
             WritelineColor(ConsoleColor.Cyan, comment);
-            string input = Console.ReadLine();
-            string userInput = ($"{char.ToUpper(input[0])}{input.Substring(1, input.Length - 1).ToLower()}");
-            Console.WriteLine();
-            return userInput;
+            string input;
+            do
+            {
+                var getInput = Console.ReadLine();
+                try
+                {
+                    string userInput = ($"{char.ToUpper(getInput[0])}{getInput.Substring(1, getInput.Length - 1).ToLower()}");
+                    input = userInput;
+                    break;
+                }
+                catch (Exception)
+                {
+                    WritelineColor(ConsoleColor.Red, $"Data cannot be left blank, pleace try again!");
+                }
+
+            } while (true);
+            return input;
         }
     }
 }

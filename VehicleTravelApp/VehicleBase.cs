@@ -1,5 +1,4 @@
-﻿
-namespace VehicleTravelApp
+﻿namespace VehicleTravelApp
 {
     public abstract class VehicleBase : IVehicle
     {
@@ -7,7 +6,8 @@ namespace VehicleTravelApp
         
         public abstract event TripAddedDelegate TripAdded;
 
-        public  VehicleBase(string brand, string model, int year, string driver)
+        public VehicleBase(string brand, string model, int year, string driver)
+            
         {
             this.Brand = brand;
             this.Model = model;
@@ -15,23 +15,71 @@ namespace VehicleTravelApp
             this.Driver = driver;
         }
 
-        public virtual string Brand { get;  set; }
+        public string Brand { get; private set; }
         
-        public virtual string Model { get;  set; }
+        public string Model { get; private set; }
         
-        public virtual int Year { get;  set; }
+        public int Year { get; private set; }
 
-        public virtual string Driver { get; set; }
+        public string Driver { get; private set; }
 
         public abstract void AddTrip(float trip);
 
         public abstract void AddTrip(char trip);
 
-        public abstract void AddTrip(string trip);
+        public  void AddTrip(string trip)
+        {
+            if (float.TryParse(trip, out float tripInString))
+            {
+                this.AddTrip(tripInString);
+            }
+            else if (char.TryParse(trip, out char tripInLeatters))
+            {
+                this.AddTrip(tripInLeatters);
+            }
+            else
+            {
+                throw new Exception("String is not float! \n");
+            }
+        }
 
-        public abstract void AddTrip(int trip);
+        public  void AddTrip(int trip)
+        {
+            float tripInInt = (float)trip;
+            this.AddTrip(tripInInt);
+        }
 
-        public abstract void AddTrip(double trip);
+        public  void AddTrip(double trip)
+        {
+            float tripInDouble = (float)trip;
+            this.AddTrip(tripInDouble);
+        }
+
+        public void VievStatistics()
+        {
+            var statistics = GetStatistics();
+            if (statistics.Count != 0)
+            {
+                Console.WriteLine("----------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine($"The Vehicle \n{this.Brand} {this.Model} {this.Year} year, with a driver {this.Driver}, made {statistics.Count} trips.");
+                Console.WriteLine($"Total distance: {statistics.Sum:N2}km");
+                Console.WriteLine($"Average distance: {statistics.Average:N2}km");
+                Console.WriteLine($"Maximum distance: {statistics.Max:N2}");
+                Console.WriteLine($"Minimum distance: {statistics.Min:N2}");
+                Console.WriteLine($"Humorous commentary depending on mileage: {statistics.AverageComent}\n\n\n");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.WriteLine("----------------------------------------------------------------");
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine($"The Vehicle \n{this.Brand} {this.Model} {this.Year} year, with a driver {this.Driver}, made {statistics.Count} trips.");
+                Console.WriteLine($"Total distance: {statistics.Sum:N2}km");
+                Console.WriteLine($"Humorous commentary depending on mileage: {statistics.AverageComent}\n\n\n");
+                Console.ResetColor();
+            }
+        }
 
         public abstract Statistics GetStatistics();
     }
